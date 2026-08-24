@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelas 8A — SMPN 56 Bandung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5EFE6;--paper:#EDE0D0;--paper2:#E8D5C0;
+  --brown:#6B4C3B;--brown-light:#A07850;--brown-dark:#3D2B1F;
+  --tan:#C9A882;--warm:#D4956A;--sage:#8FA67A;--muted:#B8A090;--ink:#3D2B1F;
+  --shadow:0 8px 28px rgba(61,43,31,.18);--shadow2:0 2px 10px rgba(61,43,31,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--cream);
+  background-image:
+    linear-gradient(rgba(61,43,31,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(61,43,31,.03) 1px,transparent 1px);
+  background-size:28px 28px;
+  font-family:'DM Sans',sans-serif;color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* ── DEV BANNER ── */
+.dev-banner{
+  background:linear-gradient(90deg,var(--brown-dark),var(--brown),var(--brown-dark));
+  background-size:200% auto;animation:shimmerBg 3s linear infinite;
+  color:#fff;text-align:center;padding:10px 16px;
+  font-size:13px;font-weight:700;letter-spacing:.06em;
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+@keyframes shimmerBg{0%{background-position:0%;}100%{background-position:200%;}}
+.dev-banner .pulse{width:8px;height:8px;border-radius:50%;background:#FFD700;animation:pulse 1.4s ease-in-out infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+
+/* ── FLOATERS ── */
+.floaters{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.floater{position:absolute;font-size:18px;opacity:0;animation:floaterAnim linear infinite;}
+@keyframes floaterAnim{
+  0%{opacity:0;transform:translateY(-20px) rotate(0deg);}
+  10%{opacity:.4;}90%{opacity:.2;}
+  100%{opacity:0;transform:translateY(100vh) rotate(360deg);}
+}
+
+#scroll-prog{
+  position:fixed;top:0;left:0;height:3px;width:0%;z-index:999;
+  background:linear-gradient(90deg,var(--warm),var(--tan),var(--sage));
+  transition:width .08s linear;border-radius:0 2px 2px 0;
+}
+
+/* ── VIEW SWITCHING ── */
+.view{display:none;position:relative;z-index:1;}
+.view.active{display:block;}
+.view.enter{animation:viewIn .55s cubic-bezier(.22,.9,.35,1) both;}
+.view.leave{animation:viewOut .3s cubic-bezier(.4,0,1,1) both;}
+@keyframes viewIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+@keyframes viewOut{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(-16px);}}
+
+/* ══════════ MENU VIEW ══════════ */
+.menu-hero{
+  min-height:52vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:50px 20px 30px;
+  position:relative;overflow:hidden;
+}
+.hero-deco{
+  position:absolute;pointer-events:none;font-size:clamp(60px,12vw,120px);opacity:.06;
+  font-family:'Caveat',cursive;font-weight:700;color:var(--brown);
+  animation:floatDeco 8s ease-in-out infinite;
+}
+.deco1{top:8%;left:2%;animation-delay:0s;}
+.deco2{bottom:10%;right:3%;animation-delay:2s;}
+.deco3{top:35%;left:-2%;font-size:80px;animation-delay:4s;}
+@keyframes floatDeco{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-18px) rotate(3deg);}}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:7px;background:var(--warm);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 14px;border-radius:100px;margin-bottom:22px;
+  animation:popIn .7s cubic-bezier(.34,1.56,.64,1) both;box-shadow:var(--shadow2);
+}
+@keyframes popIn{from{opacity:0;transform:scale(.7) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.menu-hero h1{
+  font-family:'Caveat',cursive;font-weight:700;font-size:clamp(64px,15vw,120px);
+  line-height:.95;color:var(--brown-dark);text-shadow:3px 4px 0 rgba(107,76,59,.15);
+  animation:slideUp .8s cubic-bezier(.34,1.56,.64,1) .1s both;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.menu-hero .hero-sub{
+  font-family:'Caveat',cursive;font-size:clamp(20px,4.5vw,30px);font-weight:600;
+  color:var(--brown-light);margin-top:2px;
+  animation:slideUp .8s cubic-bezier(.34,1.56,.64,1) .18s both;
+}
+.menu-hero p{
+  max-width:420px;font-size:15px;line-height:1.7;color:var(--brown);opacity:.8;margin-top:14px;
+  animation:slideUp .8s cubic-bezier(.34,1.56,.64,1) .25s both;
+}
+.hero-scroll{
+  margin-top:34px;font-family:'Caveat',cursive;font-size:17px;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  animation:slideUp .8s .45s both,bob 2s ease-in-out .5s infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+
+section.pad{padding:44px 20px 80px;}
+.pad-jadwal{padding:20px 20px 140px !important;}
+.wrap{max-width:980px;margin:0 auto;}
+.section-tag{
+  font-family:'Caveat',cursive;font-size:15px;font-weight:700;color:var(--warm);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;text-align:center;
+}
+.section-title{
+  font-family:'Caveat',cursive;font-size:clamp(32px,6vw,46px);font-weight:700;
+  color:var(--brown-dark);margin-bottom:36px;text-align:center;position:relative;
+}
+.section-title span{position:relative;display:inline-block;}
+.section-title span::after{
+  content:"";position:absolute;left:0;bottom:-6px;width:100%;height:3px;
+  background:var(--warm);border-radius:2px;
+  transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.25,.46,.45,.94) .3s;
+}
+.view.active .section-title span::after{transform:scaleX(1);}
+
+/* ── MENU GRID ── */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
+.menu-card{
+  position:relative;background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);
+  text-decoration:none;color:inherit;display:block;padding:30px 22px 26px;cursor:pointer;
+  transform:rotate(var(--tilt,0deg));
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;
+  opacity:0;animation:cardPop .6s cubic-bezier(.34,1.56,.64,1) var(--pop-delay,0s) both;
+}
+@keyframes cardPop{from{opacity:0;transform:translateY(30px) rotate(var(--tilt,0deg)) scale(.9);}to{opacity:1;transform:translateY(0) rotate(var(--tilt,0deg)) scale(1);}}
+.menu-card:hover{transform:rotate(0deg) translateY(-8px) scale(1.035);box-shadow:0 26px 60px rgba(61,43,31,.28),0 0 0 2px rgba(201,168,130,.4);}
+.menu-card:active{transform:rotate(0deg) translateY(-3px) scale(1.0);}
+.menu-card .card-glow{position:absolute;inset:0;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.5),transparent 60%);}
+.menu-card:hover .card-glow{opacity:1;}
+
+/* ── icon area, dipercantik dgn ring + sparkle biar gak kosong ── */
+.menu-icon-wrap{position:relative;width:64px;height:64px;margin-bottom:18px;}
+.icon-ring{
+  position:absolute;inset:-9px;border-radius:50%;
+  border:1.5px dashed currentColor;opacity:.3;
+  animation:ringSpin 14s linear infinite;
+}
+.icon-blob{
+  position:absolute;inset:-14px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.65),transparent 68%);
+  z-index:-1;
+}
+@keyframes ringSpin{to{transform:rotate(360deg);}}
+.icon-spark{
+  position:absolute;top:-6px;right:-6px;font-size:13px;
+  animation:sparkPulse 2.2s ease-in-out infinite;
+}
+@keyframes sparkPulse{0%,100%{opacity:.4;transform:scale(.8) rotate(0deg);}50%{opacity:1;transform:scale(1.15) rotate(15deg);}}
+.menu-icon{
+  width:64px;height:64px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+  box-shadow:var(--shadow2),inset 0 1px 0 rgba(255,255,255,.4),inset 0 -10px 16px rgba(0,0,0,.12);
+  position:relative;z-index:1;overflow:hidden;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  animation:iconIdle 3.2s ease-in-out infinite;
+  animation-delay:var(--idle-delay,0s);
+}
+@keyframes iconIdle{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-6px) rotate(-4deg);}
+}
+.menu-card:hover .menu-icon{animation-play-state:paused;transform:scale(1.12) rotate(-6deg);}
+.menu-icon::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,.4),transparent 55%);
+}
+.menu-icon::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background-image:radial-gradient(rgba(255,255,255,.35) 1.5px,transparent 1.5px);
+  background-size:9px 9px;background-position:-2px -2px;opacity:.5;
+}
+.menu-icon span.emoji{position:relative;z-index:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.15));}
+.menu-card:hover .icon-ring{opacity:.6;}
+
+.menu-title{font-family:'Caveat',cursive;font-size:26px;font-weight:700;color:var(--brown-dark);margin-bottom:4px;}
+.menu-desc{font-size:13px;color:var(--brown);opacity:.7;line-height:1.5;}
+.menu-arrow{
+  margin-top:16px;display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  opacity:.55;transition:opacity .3s,transform .3s;
+}
+.menu-card:hover .menu-arrow{opacity:1;transform:translateX(4px);}
+
+.mc-struktur .menu-icon,.mc-struktur .icon-ring{background:linear-gradient(135deg,#A07850,#C9A882);color:#A07850;}
+.mc-struktur .icon-ring{background:none;}
+.mc-jadwal .menu-icon{background:linear-gradient(135deg,#6B8F71,#8FA67A);}
+.mc-jadwal .icon-ring{color:#6B8F71;}
+.mc-informasi .menu-icon{background:linear-gradient(135deg,#7A6B8A,#9B8FAF);}
+.mc-informasi .icon-ring{color:#7A6B8A;}
+.mc-galeri .menu-icon{background:linear-gradient(135deg,#8A6B3B,#C19A60);}
+.mc-galeri .icon-ring{color:#8A6B3B;}
+.mc-medsos .menu-icon{background:linear-gradient(135deg,#4B6B8A,#7098C9);}
+.mc-medsos .icon-ring{color:#4B6B8A;}
+.mc-struktur .icon-ring{color:#A07850;}
+.menu-icon{color:#fff;}
+
+footer{
+  background:var(--brown-dark);color:rgba(255,255,255,.7);text-align:center;padding:34px 20px;
+  border-radius:24px 24px 0 0;position:relative;z-index:1;
+}
+footer .f-title{font-family:'Caveat',cursive;font-size:24px;color:#FFD700;margin-bottom:6px;}
+footer p{font-size:12.5px;opacity:.6;margin-top:6px;}
+footer .f-dev{
+  display:inline-block;margin-top:16px;background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.14);border-radius:100px;padding:8px 20px;
+  font-size:14px;font-weight:700;letter-spacing:.02em;
+}
+
+/* ══════════ TOPBAR (jadwal & soon view) ══════════ */
+.topbar{
+  padding:16px 24px;display:flex;align-items:center;gap:14px;
+  border-bottom:1.5px dashed rgba(107,76,59,.2);
+  background:rgba(245,239,230,.9);backdrop-filter:blur(6px);
+  position:sticky;top:0;z-index:90;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+  font-size:13px;font-weight:700;color:var(--brown);background:#fff;
+  border:1.5px solid var(--tan);border-radius:100px;padding:7px 16px;
+  transition:transform .2s,box-shadow .2s,background .2s;box-shadow:var(--shadow2);
+  cursor:pointer;
+}
+.back-link:hover{transform:translateX(-3px);background:var(--warm);color:#fff;border-color:var(--warm);}
+.topbar-title{font-family:'Caveat',cursive;font-size:22px;font-weight:700;color:var(--brown-dark);}
+
+/* ══════════ JADWAL VIEW ══════════ */
+.page-head{padding:88px 20px 34px;text-align:center;}
+.section-desc{font-size:14.5px;color:var(--brown);opacity:.75;max-width:460px;margin:0 auto;}
+.jadwal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
+.day-card{
+  background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);
+  opacity:0;transform:translateY(40px) scale(.92) rotateX(-8deg);transform-origin:top center;
+  transition:opacity .7s cubic-bezier(.22,.9,.35,1) var(--delay,0s),
+             transform .7s cubic-bezier(.22,.9,.35,1) var(--delay,0s),box-shadow .25s;
+}
+.day-card.show{opacity:1;transform:rotate(var(--tilt,0deg)) translateY(0) scale(1) rotateX(0deg);}
+.day-card.idle{animation:cardIdle 3.8s ease-in-out infinite;animation-delay:var(--delay,0s);}
+@keyframes cardIdle{
+  0%,100%{transform:rotate(var(--tilt,0deg)) translateY(0);}
+  50%{transform:rotate(calc(var(--tilt,0deg) + 1deg)) translateY(-5px);}
+}
+.card-header{padding:16px 20px 14px;display:flex;align-items:center;gap:10px;}
+.card-emoji{font-size:26px;}
+.card-day{font-family:'Caveat',cursive;font-size:28px;font-weight:700;color:#fff;}
+.card-body{padding:6px 20px 22px;background:#fff;}
+.lesson-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1.5px dashed rgba(61,43,31,.1);}
+.lesson-item:last-child{border-bottom:none;}
+.lesson-num{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.lesson-name{font-size:15px;font-weight:600;color:var(--brown-dark);text-transform:capitalize;}
+.card-senin .card-header{background:linear-gradient(135deg,#A07850,#C9A882);}
+.card-selasa .card-header{background:linear-gradient(135deg,#6B8F71,#8FA67A);}
+.card-rabu .card-header{background:linear-gradient(135deg,#7A6B8A,#9B8FAF);}
+.card-kamis .card-header{background:linear-gradient(135deg,#8A6B3B,#C19A60);}
+.card-jumat .card-header{background:linear-gradient(135deg,#8A4B4B,#C97070);}
+.card-senin .lesson-num{background:#A07850;}
+.card-selasa .lesson-num{background:#6B8F71;}
+.card-rabu .lesson-num{background:#7A6B8A;}
+.card-kamis .lesson-num{background:#8A6B3B;}
+.card-jumat .lesson-num{background:#8A4B4B;}
+
+/* ══════════ MEDIA SOSIAL VIEW ══════════ */
+.medsos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;max-width:680px;margin:0 auto;}
+.ig-card{
+  background:#fff;border-radius:20px;box-shadow:var(--shadow);
+  padding:28px 24px;text-align:center;
+  opacity:0;transform:translateY(28px) scale(.94);
+  animation:igIn .6s cubic-bezier(.34,1.56,.64,1) var(--pop-delay,0s) forwards;
+}
+@keyframes igIn{to{opacity:1;transform:translateY(0) scale(1);}}
+.ig-icon{
+  width:64px;height:64px;border-radius:18px;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4);
+  box-shadow:var(--shadow2),inset 0 1px 0 rgba(255,255,255,.4);
+  position:relative;overflow:hidden;
+  animation:iconIdle 3.6s ease-in-out infinite;
+}
+.ig-icon svg{position:relative;z-index:1;}
+.ig-icon::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.4),transparent 55%);}
+.ig-label{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--warm);margin-bottom:6px;
+}
+.ig-username{font-family:'Caveat',cursive;font-size:30px;font-weight:700;color:var(--brown-dark);}
+.ig-desc{font-size:13.5px;color:var(--brown);opacity:.75;margin-top:6px;line-height:1.5;}
+.ig-btn{
+  display:inline-flex;align-items:center;gap:7px;margin-top:18px;
+  background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF,#515BD4);color:#fff;
+  text-decoration:none;font-size:13px;font-weight:700;padding:10px 22px;
+  border-radius:100px;box-shadow:var(--shadow2);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+}
+.ig-btn:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 16px 34px rgba(61,43,31,.28);}
+
+/* ══════════ SOON VIEW ══════════ */
+.center{
+  min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:60px 20px;
+}
+.soon-icon{
+  width:100px;height:100px;border-radius:28px;display:flex;align-items:center;justify-content:center;
+  font-size:44px;background:linear-gradient(135deg,var(--brown-light),var(--tan));
+  box-shadow:var(--shadow);margin-bottom:26px;
+}
+.view.enter .soon-icon{animation:iconIn .7s cubic-bezier(.34,1.56,.64,1) .05s both,iconFloat 3.5s ease-in-out .8s infinite;}
+@keyframes iconIn{from{opacity:0;transform:scale(.5) rotate(-12deg);}to{opacity:1;transform:scale(1) rotate(0deg);}}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+.soon-tag{
+  display:inline-flex;align-items:center;gap:7px;background:var(--warm);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 14px;border-radius:100px;margin-bottom:18px;
+}
+.soon-title{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(38px,8vw,58px);color:var(--brown-dark);}
+.soon-box{
+  margin-top:26px;max-width:420px;background:var(--paper);border:2px dashed var(--tan);
+  border-radius:16px;padding:26px 24px;
+}
+.soon-box p{font-size:14.5px;color:var(--brown);opacity:.85;line-height:1.7;}
+.soon-box .highlight{font-family:'Caveat',cursive;font-size:20px;font-weight:700;color:var(--brown-dark);display:block;margin-bottom:6px;}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:18px;}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--warm);animation:dotPulse 1.4s ease-in-out infinite;}
+.dots span:nth-child(2){animation-delay:.2s;}
+.dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dotPulse{0%,100%{opacity:.3;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
+.soon-back{
+  margin-top:30px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  background:var(--brown-dark);color:#fff;font-size:14px;font-weight:700;padding:12px 26px;
+  border-radius:100px;box-shadow:var(--shadow2);cursor:pointer;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+}
+.soon-back:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 16px 34px rgba(61,43,31,.3);}
+</style>
+</head>
+<body>
+
+<div id="scroll-prog"></div>
+<div class="floaters" id="floaters"></div>
+
+<div class="dev-banner">
+  <span class="pulse"></span>
+  🚧 Website ini sedang dalam tahap pengembangan — nantikan fitur lengkapnya!
+  <span class="pulse"></span>
+</div>
+
+<!-- ══════ VIEW: MENU ══════ -->
+<section class="view active" id="view-menu">
+  <div class="menu-hero">
+    <div class="hero-deco deco1">8A</div>
+    <div class="hero-deco deco2">✦</div>
+    <div class="hero-deco deco3">◆</div>
+    <div class="hero-tag">Selamat Datang</div>
+    <h1>Kelas 8A</h1>
+    <p class="hero-sub">SMPN 56 Bandung</p>
+    <p>Menu utama — pilih salah satu di bawah untuk lihat jadwal, struktur kelas, galeri, sampai media sosial.</p>
+    <div class="hero-scroll">↓ pilih menu</div>
+  </div>
+
+  <div class="pad">
+    <div class="wrap">
+      <div class="section-tag">Navigasi</div>
+      <h2 class="section-title"><span>Semua Menu</span></h2>
+
+      <div class="menu-grid">
+
+        <div class="menu-card mc-jadwal" style="--tilt:-1deg;--pop-delay:.05s;--idle-delay:0s;" data-target="jadwal">
+          <div class="card-glow"></div>
+          <div class="menu-icon-wrap"><div class="icon-blob"></div><div class="icon-ring"></div><div class="menu-icon"><span class="emoji">📅</span></div><span class="icon-spark">✦</span></div>
+          <div class="menu-title">Jadwal</div>
+          <div class="menu-desc">Jadwal pelajaran harian Senin—Jumat</div>
+          <div class="menu-arrow">Buka →</div>
+        </div>
+
+        <div class="menu-card mc-struktur" style="--tilt:1.2deg;--pop-delay:.14s;--idle-delay:.4s;" data-target="soon" data-judul="Struktur Kelas" data-emoji="👥">
+          <div class="card-glow"></div>
+          <div class="menu-icon-wrap"><div class="icon-blob"></div><div class="icon-ring"></div><div class="menu-icon"><span class="emoji">👥</span></div><span class="icon-spark">✧</span></div>
+          <div class="menu-title">Struktur Kelas</div>
+          <div class="menu-desc">Wali kelas, ketua kelas, & pengurus</div>
+          <div class="menu-arrow">Buka →</div>
+        </div>
+
+        <div class="menu-card mc-informasi" style="--tilt:-1.4deg;--pop-delay:.23s;--idle-delay:.8s;" data-target="soon" data-judul="Informasi" data-emoji="📢">
+          <div class="card-glow"></div>
+          <div class="menu-icon-wrap"><div class="icon-blob"></div><div class="icon-ring"></div><div class="menu-icon"><span class="emoji">📢</span></div><span class="icon-spark">✦</span></div>
+          <div class="menu-title">Informasi</div>
+          <div class="menu-desc">Pengumuman & info penting kelas</div>
+          <div class="menu-arrow">Buka →</div>
+        </div>
+
+        <div class="menu-card mc-galeri" style="--tilt:1deg;--pop-delay:.32s;--idle-delay:1.2s;" data-target="soon" data-judul="Galeri Foto" data-emoji="📸">
+          <div class="card-glow"></div>
+          <div class="menu-icon-wrap"><div class="icon-blob"></div><div class="icon-ring"></div><div class="menu-icon"><span class="emoji">📸</span></div><span class="icon-spark">✧</span></div>
+          <div class="menu-title">Galeri Foto</div>
+          <div class="menu-desc">Dokumentasi momen seru Kelas 8A</div>
+          <div class="menu-arrow">Buka →</div>
+        </div>
+
+        <div class="menu-card mc-medsos" style="--tilt:-1.2deg;--pop-delay:.41s;--idle-delay:1.6s;" data-target="medsos">
+          <div class="card-glow"></div>
+          <div class="menu-icon-wrap"><div class="icon-blob"></div><div class="icon-ring"></div><div class="menu-icon"><span class="emoji">📱</span></div><span class="icon-spark">✦</span></div>
+          <div class="menu-title">Media Sosial</div>
+          <div class="menu-desc">Akun Instagram & sosmed kelas</div>
+          <div class="menu-arrow">Buka →</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="f-title">Kelas 8A — SMPN 56 Bandung</div>
+    <p>🚧 Masih dalam tahap pengembangan</p>
+    <div class="f-dev">Dibuat oleh Azka</div>
+  </footer>
+</section>
+
+<!-- ══════ VIEW: JADWAL ══════ -->
+<section class="view" id="view-jadwal">
+  <div class="topbar">
+    <span class="back-link" data-back>← Menu</span>
+    <span class="topbar-title">✦ Kelas 8A</span>
+  </div>
+
+  <div class="page-head">
+    <div class="section-tag">📅 Info Kelas</div>
+    <h2 class="section-title"><span>Jadwal Pelajaran</span></h2>
+    <p class="section-desc">Jadwal pelajaran Kelas 8A — biar gak ada yang telat ngumpulin tugas atau lupa bawa buku.</p>
+  </div>
+
+  <div class="pad pad-jadwal">
+    <div class="wrap">
+      <div class="jadwal-grid">
+
+        <div class="day-card card-senin" style="--tilt:-1.5deg;--delay:.05s;">
+          <div class="card-header"><span class="card-emoji">📐</span><span class="card-day">Senin</span></div>
+          <div class="card-body">
+            <div class="lesson-item"><div class="lesson-num">1</div><div class="lesson-name">Matematika</div></div>
+            <div class="lesson-item"><div class="lesson-num">2</div><div class="lesson-name">B. Inggris</div></div>
+            <div class="lesson-item"><div class="lesson-num">3</div><div class="lesson-name">IPA</div></div>
+            <div class="lesson-item"><div class="lesson-num">4</div><div class="lesson-name">PABP</div></div>
+          </div>
+        </div>
+
+        <div class="day-card card-selasa" style="--tilt:1.2deg;--delay:.12s;">
+          <div class="card-header"><span class="card-emoji">🔬</span><span class="card-day">Selasa</span></div>
+          <div class="card-body">
+            <div class="lesson-item"><div class="lesson-num">1</div><div class="lesson-name">IPA</div></div>
+            <div class="lesson-item"><div class="lesson-num">2</div><div class="lesson-name">B. Indonesia</div></div>
+            <div class="lesson-item"><div class="lesson-num">3</div><div class="lesson-name">PPKN</div></div>
+          </div>
+        </div>
+
+        <div class="day-card card-rabu" style="--tilt:-1deg;--delay:.19s;">
+          <div class="card-header"><span class="card-emoji">🎨</span><span class="card-day">Rabu</span></div>
+          <div class="card-body">
+            <div class="lesson-item"><div class="lesson-num">1</div><div class="lesson-name">Seni Budaya</div></div>
+            <div class="lesson-item"><div class="lesson-num">2</div><div class="lesson-name">IPS</div></div>
+            <div class="lesson-item"><div class="lesson-num">3</div><div class="lesson-name">BK</div></div>
+            <div class="lesson-item"><div class="lesson-num">4</div><div class="lesson-name">Informatika</div></div>
+          </div>
+        </div>
+
+        <div class="day-card card-kamis" style="--tilt:1.5deg;--delay:.26s;">
+          <div class="card-header"><span class="card-emoji">🌏</span><span class="card-day">Kamis</span></div>
+          <div class="card-body">
+            <div class="lesson-item"><div class="lesson-num">1</div><div class="lesson-name">B. Inggris</div></div>
+            <div class="lesson-item"><div class="lesson-num">2</div><div class="lesson-name">B. Sunda</div></div>
+            <div class="lesson-item"><div class="lesson-num">3</div><div class="lesson-name">IPS</div></div>
+            <div class="lesson-item"><div class="lesson-num">4</div><div class="lesson-name">B. Indonesia</div></div>
+          </div>
+        </div>
+
+        <div class="day-card card-jumat" style="--tilt:-1.2deg;--delay:.33s;">
+          <div class="card-header"><span class="card-emoji">⚽</span><span class="card-day">Jumat</span></div>
+          <div class="card-body">
+            <div class="lesson-item"><div class="lesson-num">1</div><div class="lesson-name">PJOK</div></div>
+            <div class="lesson-item"><div class="lesson-num">2</div><div class="lesson-name">Matematika</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer><p>🚧 Masih dalam tahap pengembangan</p></footer>
+</section>
+
+<!-- ══════ VIEW: MEDIA SOSIAL ══════ -->
+<section class="view" id="view-medsos">
+  <div class="topbar">
+    <span class="back-link" data-back>← Menu</span>
+    <span class="topbar-title">✦ Kelas 8A</span>
+  </div>
+
+  <div class="page-head">
+    <div class="section-tag">📱 Sosial Media</div>
+    <h2 class="section-title"><span>Media Sosial</span></h2>
+    <p class="section-desc">Follow akun Instagram Kelas 8A biar gak ketinggalan info & momen seru.</p>
+  </div>
+
+  <div class="pad">
+    <div class="wrap">
+      <div class="medsos-grid">
+
+        <div class="ig-card" style="--pop-delay:.1s;">
+          <div class="ig-icon"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="6"></rect><circle cx="12" cy="12" r="4.5"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="#fff" stroke="none"></circle></svg></div>
+          <div class="ig-label">Akun Utama Kelas</div>
+          <div class="ig-username">@the8achievers_56</div>
+          <p class="ig-desc">Akun utama Kelas 8A</p>
+          <a class="ig-btn" href="https://instagram.com/the8achievers_56" target="_blank" rel="noopener">Buka Instagram →</a>
+        </div>
+
+        <div class="ig-card" style="--pop-delay:.22s;">
+          <div class="ig-icon"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="6"></rect><circle cx="12" cy="12" r="4.5"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="#fff" stroke="none"></circle></svg></div>
+          <div class="ig-label">Akun Tugas Kelas</div>
+          <div class="ig-username">@eight_achievers56</div>
+          <p class="ig-desc">Tempat kumpul info & tugas kelas</p>
+          <a class="ig-btn" href="https://instagram.com/eight_achievers56" target="_blank" rel="noopener">Buka Instagram →</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer><p>🚧 Masih dalam tahap pengembangan</p></footer>
+</section>
+
+<!-- ══════ VIEW: SOON (dinamis) ══════ -->
+<section class="view" id="view-soon">
+  <div class="topbar">
+    <span class="back-link" data-back>← Menu</span>
+    <span class="topbar-title">✦ Kelas 8A</span>
+  </div>
+
+  <div class="center">
+    <div class="soon-icon" id="soonIcon">🚧</div>
+    <div class="soon-tag">Segera Hadir</div>
+    <h1 class="soon-title" id="soonTitle">Fitur Ini</h1>
+
+    <div class="soon-box">
+      <span class="highlight">Masih dalam tahap pengembangan</span>
+      <p>Halaman ini belum tersedia karena kontennya belum dimasukkan. Pantengin terus, nanti bakal segera dilengkapi ya!</p>
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <span class="soon-back" data-back>← Kembali ke Menu</span>
+  </div>
+
+  <footer><p>🚧 Masih dalam tahap pengembangan</p></footer>
+</section>
+
+<script>
+// ── SCROLL PROGRESS ──
+const prog = document.getElementById('scroll-prog');
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  prog.style.width = (pct||0) + '%';
+}, {passive:true});
+
+// ── FLOATERS ──
+const emojis = ['✦','🍂','⭐','✿','🌿','◆','✧'];
+const floatWrap = document.getElementById('floaters');
+for(let i=0;i<14;i++){
+  const f = document.createElement('div');
+  f.className = 'floater';
+  f.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  f.style.left = Math.random()*100+'vw';
+  f.style.top = Math.random()*-100+'px';
+  f.style.fontSize = (12+Math.random()*14)+'px';
+  const dur = 12+Math.random()*16;
+  f.style.animationDuration = dur+'s';
+  f.style.animationDelay = (Math.random()*dur)+'s';
+  floatWrap.appendChild(f);
+}
+
+// ── SPA VIEW SWITCHER (tanpa reload) ──
+let current = document.getElementById('view-menu');
+
+function playDayCards(){
+  const cards = document.querySelectorAll('#view-jadwal .day-card');
+  cards.forEach(card=> card.classList.remove('show','idle'));
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      cards.forEach(card=>{
+        card.classList.add('show');
+        card.querySelectorAll('.lesson-item').forEach((item,i)=>{
+          item.style.opacity='0';item.style.transform='translateX(-12px)';
+          item.style.transition=`opacity .4s ease ${.4+i*.08}s, transform .4s ease ${.4+i*.08}s`;
+        });
+      });
+      requestAnimationFrame(()=>{
+        cards.forEach(card=>{
+          card.querySelectorAll('.lesson-item').forEach(item=>{
+            item.style.opacity='1';item.style.transform='translateX(0)';
+          });
+        });
+      });
+    });
+  });
+
+  // goyangan otomatis nyala terus setelah kartu muncul — gak perlu disentuh
+  setTimeout(()=>{
+    cards.forEach(card=> card.classList.add('idle'));
+  }, 950);
+}
+
+function goTo(target, data){
+  if(target === current.id.replace('view-','')) return;
+  const next = document.getElementById('view-' + target);
+  if(!next || next === current) return;
+
+  if(target === 'soon' && data){
+    document.getElementById('soonTitle').textContent = data.judul || 'Fitur Ini';
+    document.getElementById('soonIcon').textContent = data.emoji || '🚧';
+  }
+
+  const prev = current;
+  prev.classList.add('leave');
+  window.scrollTo(0, 0);
+
+  setTimeout(()=>{
+    prev.classList.remove('active','leave','enter');
+    next.classList.add('active','enter');
+    current = next;
+    if(target === 'jadwal') setTimeout(playDayCards, 80);
+    setTimeout(()=> next.classList.remove('enter'), 600);
+  }, 260);
+}
+
+document.querySelectorAll('[data-target]').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    goTo(el.dataset.target, {judul:el.dataset.judul, emoji:el.dataset.emoji});
+  });
+});
+document.querySelectorAll('[data-back]').forEach(el=>{
+  el.addEventListener('click', ()=> goTo('menu'));
+});
+
+if(history.scrollRestoration) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+</script>
+</body>
+</html>
